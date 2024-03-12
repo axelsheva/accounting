@@ -1,0 +1,22 @@
+{
+  "name": "accounting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/benchmark": "^2.1.5",
+    "@types/node": "^20.11.26",
+    "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "benchmark": "^2.1.4",
+    "decimal.js": "^10.4.3",
+    "decimal.js-light": "^2.5.1"
+  }
+}
