@@ -13,15 +13,9 @@ export namespace TransactionNamespace {
     }
 }
 
-export interface Transaction {
+interface ITransactionBase {
     id: string;
     type: TransactionNamespace.Type;
-    payload: DepositPayload | WithdrawPayload | TransferPayload;
-}
-
-export interface Deposit extends Transaction {
-    type: TransactionNamespace.Type.deposit;
-    payload: DepositPayload;
 }
 
 interface DepositPayload {
@@ -29,9 +23,9 @@ interface DepositPayload {
     amount: Decimal;
 }
 
-export interface Withdraw extends Transaction {
-    type: TransactionNamespace.Type.withdraw;
-    payload: WithdrawPayload;
+export interface Deposit extends ITransactionBase {
+    type: TransactionNamespace.Type.deposit;
+    payload: DepositPayload;
 }
 
 interface WithdrawPayload {
@@ -39,9 +33,9 @@ interface WithdrawPayload {
     amount: Decimal;
 }
 
-export interface Transfer extends Transaction {
-    type: TransactionNamespace.Type.transfer;
-    payload: TransferPayload;
+export interface Withdraw extends ITransactionBase {
+    type: TransactionNamespace.Type.withdraw;
+    payload: WithdrawPayload;
 }
 
 interface TransferPayload {
@@ -50,18 +44,13 @@ interface TransferPayload {
     amount: Decimal;
 }
 
+export interface Transfer extends ITransactionBase {
+    type: TransactionNamespace.Type.transfer;
+    payload: TransferPayload;
+}
+
+export type Transaction = Deposit | Withdraw | Transfer;
+
 export interface ITransactionProcessor {
     process(balances: Record<string, Balance | undefined>, transactions: Array<Transaction>): void;
-}
-
-export function isDeposit(transaction: Transaction): transaction is Deposit {
-    return transaction.type === TransactionNamespace.Type.deposit;
-}
-
-export function isWithdraw(transaction: Transaction): transaction is Withdraw {
-    return transaction.type === TransactionNamespace.Type.withdraw;
-}
-
-export function isTransfer(transaction: Transaction): transaction is Transfer {
-    return transaction.type === TransactionNamespace.Type.transfer;
 }

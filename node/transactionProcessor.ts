@@ -4,11 +4,9 @@ import {
     Deposit,
     ITransactionProcessor,
     Transaction,
+    TransactionNamespace,
     Transfer,
     Withdraw,
-    isDeposit,
-    isTransfer,
-    isWithdraw,
 } from './types';
 
 export class TransactionProcessor implements ITransactionProcessor {
@@ -20,12 +18,18 @@ export class TransactionProcessor implements ITransactionProcessor {
 
     process(balances: Record<string, Balance | undefined>, transactions: Array<Transaction>): void {
         transactions.forEach((transaction) => {
-            if (isDeposit(transaction)) {
-                this.processDeposit(transaction, balances);
-            } else if (isWithdraw(transaction)) {
-                this.processWithdraw(transaction, balances);
-            } else if (isTransfer(transaction)) {
-                this.processTransfer(transaction, balances);
+            switch (transaction.type) {
+                case TransactionNamespace.Type.deposit:
+                    this.processDeposit(transaction, balances);
+                    break;
+                case TransactionNamespace.Type.withdraw:
+                    this.processWithdraw(transaction, balances);
+                    break;
+                case TransactionNamespace.Type.transfer:
+                    this.processTransfer(transaction, balances);
+                    break;
+                default:
+                    throw new Error('Invalid transaction type');
             }
         });
 

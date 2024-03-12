@@ -5,15 +5,15 @@
 Node.js
 
 ```bash
-➜  node ts-node benchmark.ts
-TransactionProcessorImpl#process x 386,618 ops/sec ±1.69% (89 runs sampled)
+➜  node git:(master) ✗ ts-node benchmark.ts
+TransactionProcessorImpl#process x 390,620 ops/sec ±1.58% (90 runs sampled)
 Fastest is TransactionProcessorImpl#process
 ```
 
 Go
 
 ```bash
-➜  go go test -bench=.
+➜  go git:(master) ✗ go test -bench=.
 goos: darwin
 goarch: arm64
 pkg: accounting-go
