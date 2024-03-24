@@ -1,0 +1,15 @@
+[package]
+name = "rust_transaction_processor"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rust_decimal = "1.18.0"
+
+[dev-dependencies]
+criterion = "0.4"
+
+[[bench]]
+name = "performance"
+path = "benches/performance.rs"
+harness = false  # Indicates that the benchmark will provide its own harness
