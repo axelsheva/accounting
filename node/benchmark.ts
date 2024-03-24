@@ -6,7 +6,10 @@ import { Balance, Transaction, TransactionNamespace } from './types';
 const balances: Record<string, Balance> = {};
 const transactions: Array<Transaction> = [];
 
-for (let i = 0; i < 6; i++) {
+const transferToBalanceId = 'balance-transfer';
+balances[transferToBalanceId] = { id: transferToBalanceId, amount: new Decimal(0) };
+
+for (let i = 0; i < 2; i++) {
     const balanceId = `balance-${i}`;
     balances[balanceId] = { id: balanceId, amount: new Decimal(1000) };
 
@@ -22,17 +25,15 @@ for (let i = 0; i < 6; i++) {
         payload: { balanceId, amount: new Decimal(50) },
     });
 
-    if (i > 0) {
-        transactions.push({
-            id: `transfer-${i}`,
-            type: TransactionNamespace.Type.transfer,
-            payload: {
-                fromBalanceId: `balance-${i - 1}`,
-                toBalanceId: balanceId,
-                amount: new Decimal(25),
-            },
-        });
-    }
+    transactions.push({
+        id: `transfer-${i}`,
+        type: TransactionNamespace.Type.transfer,
+        payload: {
+            fromBalanceId: balanceId,
+            toBalanceId: transferToBalanceId,
+            amount: new Decimal(25),
+        },
+    });
 }
 
 const transactionProcessor = new TransactionProcessor();
@@ -44,9 +45,9 @@ suite
         transactionProcessor.process(balances, transactions);
     })
     .on('cycle', (event: any) => {
-        console.log(String(event.target));
-    })
-    .on('complete', () => {
-        console.log('Fastest is ' + suite.filter('fastest').map('name'));
+        const benchmark = event.target;
+        const msPerOp = benchmark.times.period * 1000; // time in milliseconds per operation
+        const nsPerOp = msPerOp * 1000000; // conversion in nanoseconds per operation
+        console.log(`${benchmark.name}: ${nsPerOp.toFixed(0)} ns/op`);
     })
     .run({ async: true });

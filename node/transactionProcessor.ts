@@ -82,7 +82,7 @@ export class TransactionProcessor implements ITransactionProcessor {
         Object.entries(balances).forEach(([balanceId, balance]) => {
             if (balance && balance.amount.lessThan(this.minimumAllowedBalance)) {
                 throw new Error(
-                    `Final balance check failed for ${balanceId}: balance is below minimum allowed.`,
+                    `Final balance check failed for ${balanceId}: balance is below minimum allowed. Balance is ${balance.amount}.`,
                 );
             }
         });
